@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windows 7 Ethernet States</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #f0f0f0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .section {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .icon-display {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            background: linear-gradient(180deg, #e8f4fd 0%, #cce5f7 100%);
+            border-radius: 4px;
+            margin-bottom: 20px;
+            min-height: 80px;
+        }
+
+        .ethernet-icon {
+            position: relative;
+            width: 48px;
+            height: 48px;
+        }
+
+        .monitor-screen {
+            position: absolute;
+            width: 28px;
+            height: 22px;
+            left: 10px;
+            top: 6px;
+            background: linear-gradient(180deg, #d4e8f7 0%, #b8d9f0 50%, #9bc7e8 100%);
+            border: 2px solid #5d9ec9;
+            border-radius: 2px;
+        }
+
+        .monitor-stand {
+            position: absolute;
+            width: 8px;
+            height: 4px;
+            left: 20px;
+            top: 30px;
+            background: linear-gradient(180deg, #6ba3cc 0%, #5d9ec9 100%);
+            border-radius: 0 0 1px 1px;
+        }
+
+        .monitor-base {
+            position: absolute;
+            width: 16px;
+            height: 3px;
+            left: 16px;
+            top: 34px;
+            background: linear-gradient(180deg, #5d9ec9 0%, #4a8bb5 100%);
+            border-radius: 1px;
+        }
+
+        .ethernet-cable {
+            position: absolute;
+            width: 3px;
+            height: 10px;
+            left: 38px;
+            top: 15px;
+            background: #7ab8df;
+            border-radius: 1px;
+        }
+
+        .ethernet-cable-left {
+            position: absolute;
+            width: 3px;
+            height: 10px;
+            left: 7px;
+            top: 15px;
+            background: #7ab8df;
+            border-radius: 1px;
+        }
+
+        .ethernet-plug-left {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            left: 5px;
+            top: 24px;
+            background: linear-gradient(135deg, #7ab8df 0%, #5d9ec9 100%);
+            border: 1px solid #5d9ec9;
+            border-radius: 1px;
+        }
+
+        .ethernet-plug-left::before {
+            content: '';
+            position: absolute;
+            width: 4px;
+            height: 2px;
+            left: 1px;
+            top: 2px;
+            background: #4a8bb5;
+            border-radius: 0.5px;
+        }
+
+        .ethernet-plug {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            left: 36px;
+            top: 24px;
+            background: linear-gradient(135deg, #7ab8df 0%, #5d9ec9 100%);
+            border: 1px solid #5d9ec9;
+            border-radius: 1px;
+        }
+
+        .ethernet-plug::before {
+            content: '';
+            position: absolute;
+            width: 4px;
+            height: 2px;
+            left: 1px;
+            top: 2px;
+            background: #4a8bb5;
+            border-radius: 0.5px;
+        }
+
+        .red-x {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            right: -2px;
+            bottom: 8px;
+            background: #e74c3c;
+            border-radius: 50%;
+            border: 2px solid white;
+            display: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .red-x::before,
+        .red-x::after {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 2px;
+            background: white;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(45deg);
+        }
+
+        .red-x::after {
+            transform: translate(-50%, -50%) rotate(-45deg);
+        }
+
+        .warning-triangle {
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 12px solid transparent;
+            border-right: 12px solid transparent;
+            border-bottom: 20px solid #f9d857;
+            right: -2px;
+            bottom: 10px;
+            display: none;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        }
+
+        .warning-triangle::before {
+            content: '';
+            position: absolute;
+            width: 2px;
+            height: 8px;
+            background: #333;
+            left: -1px;
+            top: 4px;
+            border-radius: 1px;
+        }
+
+        .warning-triangle::after {
+            content: '';
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #333;
+            left: -1px;
+            top: 14px;
+            border-radius: 50%;
+        }
+
+        .connecting-circle {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            right: 0;
+            bottom: 10px;
+            display: none;
+        }
+
+        .connecting-spinner {
+            width: 100%;
+            height: 100%;
+            border: 3px solid #e0e0e0;
+            border-top: 3px solid #0078d4;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .activity-indicator {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            border-radius: 1px;
+            opacity: 0;
+        }
+
+        .send-indicator {
+            left: 12px;
+            top: 10px;
+            background: #ffd966;
+            box-shadow: 0 0 4px #ffd966;
+        }
+
+        .receive-indicator {
+            left: 12px;
+            top: 18px;
+            background: #7ddb7d;
+            box-shadow: 0 0 4px #7ddb7d;
+        }
+
+        .indicator-active {
+            opacity: 1 !important;
+        }
+
+        .state-disconnected .red-x { display: block; }
+        .state-no-internet .warning-triangle { display: block; }
+        .state-connecting .connecting-circle { display: block; }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: #0078d4;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 13px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background: #005a9e;
+        }
+
+        button:active {
+            background: #004578;
+        }
+
+        .status {
+            text-align: center;
+            color: #333;
+            font-size: 13px;
+            margin-top: 15px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="section">
+        <div class="icon-display">
+            <div class="ethernet-icon" id="ethernetIcon">
+                <div class="monitor-screen"></div>
+                <div class="monitor-stand"></div>
+                <div class="monitor-base"></div>
+                <div class="ethernet-cable-left"></div>
+                <div class="ethernet-plug-left"></div>
+                <div class="ethernet-cable"></div>
+                <div class="ethernet-plug"></div>
+                
+                <div class="red-x"></div>
+                <div class="warning-triangle"></div>
+                <div class="connecting-circle">
+                    <div class="connecting-spinner"></div>
+                </div>
+                
+                <div class="activity-indicator send-indicator" id="sendIndicator"></div>
+                <div class="activity-indicator receive-indicator" id="receiveIndicator"></div>
+            </div>
+        </div>
+
+        <div class="status" id="status">Network cable unplugged</div>
+
+        <div class="controls">
+            <button onclick="setState('disconnected')">Disconnected (Red X)</button>
+            <button onclick="setState('no-internet')">No Internet (Warning)</button>
+            <button onclick="setState('connecting')">Connecting (Blue Circle)</button>
+            <button onclick="setState('connected')">Connected (Plain)</button>
+            <button onclick="setState('send')">Sending</button>
+            <button onclick="setState('receive')">Receiving</button>
+            <button onclick="setState('both')">Send & Receive</button>
+        </div>
+    </div>
+
+    <script>
+        const icon = document.getElementById('ethernetIcon');
+        const statusText = document.getElementById('status');
+        const sendIndicator = document.getElementById('sendIndicator');
+        const receiveIndicator = document.getElementById('receiveIndicator');
+        let currentState = 'disconnected';
+
+        function clearStates() {
+            icon.className = 'ethernet-icon';
+            sendIndicator.classList.remove('indicator-active');
+            receiveIndicator.classList.remove('indicator-active');
+        }
+
+        function setState(state) {
+            clearStates();
+            currentState = state;
+
+            switch(state) {
+                case 'disconnected':
+                    icon.classList.add('state-disconnected');
+                    statusText.textContent = 'Network cable unplugged';
+                    break;
+                
+                case 'no-internet':
+                    icon.classList.add('state-no-internet');
+                    statusText.textContent = 'No Internet access';
+                    break;
+                
+                case 'connecting':
+                    icon.classList.add('state-connecting');
+                    statusText.textContent = 'Identifying...';
+                    break;
+                
+                case 'connected':
+                    statusText.textContent = 'Local Area Connection - Network access';
+                    break;
+                
+                case 'send':
+                    sendIndicator.classList.add('indicator-active');
+                    statusText.textContent = 'Sending packets...';
+                    setTimeout(() => {
+                        if (currentState === 'send') {
+                            sendIndicator.classList.remove('indicator-active');
+                            statusText.textContent = 'Local Area Connection - Network access';
+                        }
+                    }, 100);
+                    break;
+                
+                case 'receive':
+                    receiveIndicator.classList.add('indicator-active');
+                    statusText.textContent = 'Receiving packets...';
+                    setTimeout(() => {
+                        if (currentState === 'receive') {
+                            receiveIndicator.classList.remove('indicator-active');
+                            statusText.textContent = 'Local Area Connection - Network access';
+                        }
+                    }, 100);
+                    break;
+                
+                case 'both':
+                    sendIndicator.classList.add('indicator-active');
+                    receiveIndicator.classList.add('indicator-active');
+                    statusText.textContent = 'Sending and receiving packets...';
+                    setTimeout(() => {
+                        if (currentState === 'both') {
+                            sendIndicator.classList.remove('indicator-active');
+                            receiveIndicator.classList.remove('indicator-active');
+                            statusText.textContent = 'Local Area Connection - Network access';
+                        }
+                    }, 100);
+                    break;
+            }
+        }
+
+        setState('disconnected');
+
+        setTimeout(() => {
+            setState('connecting');
+            setTimeout(() => {
+                setState('connected');
+                setTimeout(() => {
+                    setState('both');
+                }, 2000);
+            }, 2000);
+        }, 1000);
+    </script>
+</body>
+</html>
